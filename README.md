@@ -33,7 +33,7 @@ curl -s -X POST localhost:8080/v1/dashboard/keys \
 
 Call a metered route:
 ```bash
-API_KEY=sk_live_replace_me npm run cli -- call /v1/echo
+API_KEY=<your_api_key_here> npm run cli -- call /v1/echo
 ```
 
 ## Fit your existing API

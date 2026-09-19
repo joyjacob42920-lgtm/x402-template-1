@@ -26,7 +26,15 @@ dashboardRouter.get("/keys", (_req, res) => {
 });
 
 dashboardRouter.post("/keys", (req, res) => {
-  res.status(201).json({ key: { id: "key_new", customerId: req.body?.customerId || null, secret: "sk_live_replace_me" } });
+  // Never return real key material in scaffold responses. In a real implementation,
+  // you would return the key secret ONCE, and only to authorized admins.
+  res.status(201).json({
+    key: {
+      id: "key_new",
+      customerId: req.body?.customerId || null,
+      secret: "***redacted***",
+    },
+  });
 });
 
 dashboardRouter.get("/customers", (_req, res) => {
