@@ -49,3 +49,23 @@ See `SCOPE.md` for locked decisions and out-of-scope items.
 
 ## Status
 Scaffold only. Persistence and real key lookup are TODO stubs. Public MIT under Joy’s GitHub account.
+
+## Nano (XNO) settlement rail (receive-only)
+
+This fork adds an optional, self-custodied Nano settlement rail to the paid-by-default
+gate. Enable it with env vars — the existing plan-flag path is untouched when off:
+
+```
+NANO_MODE=enabled
+NANO_RECEIVE_ACCOUNT=nano_...   # the payout account you receive on
+NANO_MIN_XNO=0.000000000001     # minimum settlement per call
+```
+
+When enabled, a request whose key is not `paid` must present a settled Nano block
+(`x-payment-hash` header) that the server verifies over a public keyless RPC
+(`src/nano/verify.ts`) before it serves the call. The server never holds a private key;
+settlement is the verification. Fail-closed: an unconfirmed, mismatched or missing block
+is a 402.
+
+- `npm run build` — compiles.
+- `npm test` — network-free tests: raw<->XNO exact conversion + fail-closed validation.
